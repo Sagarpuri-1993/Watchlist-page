@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watchlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.95); }
+    }
+    .fade-in-up {
+      animation: fadeInUp 0.4s ease-out;
+    }
+    .fade-out {
+      animation: fadeOut 0.3s ease-out forwards;
+    }
+    .selected {
+      background-color: #facc15 !important;
+      color: #1f2937 !important;
+      font-weight: bold;
+      transform: scale(1.05);
+    }
+    .btn {
+      transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 110px;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4 md:p-6 font-sans">
+
+  <div class="max-w-4xl mx-auto bg-gray-800 p-4 md:p-6 rounded-2xl shadow-lg space-y-6 fade-in-up">
+
+    <!-- Title with Type buttons on right -->
+    <div>
+      <label class="block text-sm font-semibold mb-1">Title</label>
+      <div class="flex gap-2 items-center">
+        <input id="titleInput" type="text" class="flex-1 p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Enter title" />
+        <div class="flex gap-2">
+          <button class="btn type-btn bg-gray-700 hover:bg-yellow-600 px-4 py-2 rounded h-[42px] flex items-center gap-1">
+            <i class="fas fa-film"></i> Movie
+          </button>
+          <button class="btn type-btn bg-gray-700 hover:bg-yellow-600 px-4 py-2 rounded h-[42px] flex items-center gap-1">
+            <i class="fas fa-tv"></i> Series
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform with Icons -->
+    <div>
+      <label class="block font-semibold mb-1">Platform</label>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fab fa-netflix text-red-500"></i> Netflix
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fab fa-amazon text-blue-400"></i> Prime
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-play text-blue-300"></i> Hotstar
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-video text-red-400"></i> JioCinema
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-z text-purple-400"></i> Zee5
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-s text-blue-300"></i> SonyLIV
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-a text-red-400"></i> Alt Balaji
+        </button>
+        <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded">
+          <i class="fas fa-play-circle text-green-400"></i> MX Player
+        </button>
+      </div>
+    </div>
+
+    <!-- Genre -->
+    <div>
+      <label class="block font-semibold mb-1">Genre</label>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-fist-raised"></i> Action
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-laugh-squint"></i> Comedy
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-ghost"></i> Horror
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-rocket"></i> Sci-Fi
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-handcuffs"></i> Crime
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-search"></i> Investigate
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-skull"></i> Murder
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-brain"></i> Psycho
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-heart-rate"></i> Thriller
+        </button>
+        <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded flex items-center gap-1">
+          <i class="fas fa-question"></i> Mystery
+        </button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div>
+      <label class="block font-semibold mb-1">Rating (1 - 10)</label>
+      <div class="flex items-center gap-2">
+        <input id="ratingInput" type="number" min="1" max="10" class="w-24 p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="e.g. 8" />
+        <div id="ratingStars" class="flex text-yellow-400">
+          <i class="far fa-star" data-rating="1"></i>
+          <i class="far fa-star" data-rating="2"></i>
+          <i class="far fa-star" data-rating="3"></i>
+          <i class="far fa-star" data-rating="4"></i>
+          <i class="far fa-star" data-rating="5"></i>
+          <i class="far fa-star" data-rating="6"></i>
+          <i class="far fa-star" data-rating="7"></i>
+          <i class="far fa-star" data-rating="8"></i>
+          <i class="far fa-star" data-rating="9"></i>
+          <i class="far fa-star" data-rating="10"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Button -->
+    <div class="text-center mt-4">
+      <button id="addBtn" class="btn bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-8 py-2 rounded-full transition duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 mx-auto">
+        <i class="fas fa-plus"></i> Add to List
+      </button>
+    </div>
+
+    <!-- Watchlist -->
+    <div class="pt-6 border-t border-gray-600">
+      <h2 class="text-xl font-bold text-yellow-400 mb-3 flex items-center gap-2">
+        <i class="fas fa-bookmark"></i> Your Watchlist
+      </h2>
+      <div id="watchlist" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Cards will appear here -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Load watchlist from localStorage when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedWatchlist = localStorage.getItem('watchlist');
+      if (savedWatchlist) {
+        document.getElementById('watchlist').innerHTML = savedWatchlist;
+        
+        // Reattach delete event listeners to loaded cards
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const card = this.closest('div');
+            card.classList.add('fade-out');
+            setTimeout(() => {
+              card.remove();
+              saveWatchlist();
+            }, 300);
+          });
+        });
+      }
+    });
+
+    // Function to save watchlist to localStorage
+    function saveWatchlist() {
+      const watchlistHTML = document.getElementById('watchlist').innerHTML;
+      localStorage.setItem('watchlist', watchlistHTML);
+    }
+
+    // Toggle single-select buttons
+    document.querySelectorAll('.type-btn').forEach(btn =>
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      })
+    );
+
+    document.querySelectorAll('.platform-btn').forEach(btn =>
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      })
+    );
+
+    // Toggle multi-select genres
+    document.querySelectorAll('.toggle-btn').forEach(btn =>
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('selected');
+      })
+    );
+
+    // Rating stars interaction
+    const stars = document.querySelectorAll('#ratingStars i');
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const rating = parseInt(star.getAttribute('data-rating'));
+        document.getElementById('ratingInput').value = rating;
+        
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.classList.remove('far');
+            s.classList.add('fas');
+          } else {
+            s.classList.remove('fas');
+            s.classList.add('far');
+          }
+        });
+      });
+    });
+
+    // Add to Watchlist
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const title = document.getElementById('titleInput').value.trim();
+      const rating = document.getElementById('ratingInput').value || '-';
+      const type = document.querySelector('.type-btn.selected')?.innerText || 'N/A';
+      const platform = document.querySelector('.platform-btn.selected')?.innerText || 'N/A';
+      const genres = Array.from(document.querySelectorAll('.toggle-btn.selected')).map(btn => btn.innerText).join(', ') || 'None';
+
+      if (!title) return alert("Please enter a title!");
+
+      // Create card
+      const card = document.createElement('div');
+      card.className = 'bg-gray-700 p-4 rounded-lg shadow-md fade-in-up relative group';
+      card.innerHTML = `
+        <button class="absolute top-1 right-1 text-red-500 hover:text-red-400 text-sm font-bold bg-gray-900 bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center delete-btn opacity-0 group-hover:opacity-100 transition-opacity">
+          <i class="fas fa-times"></i>
+        </button>
+        <p class="flex items-center gap-2"><i class="fas fa-film text-yellow-400"></i> <strong>Title:</strong> ${title}</p>
+        <p class="flex items-center gap-2"><i class="fas fa-tag text-yellow-400"></i> <strong>Type:</strong> ${type}</p>
+        <p class="flex items-center gap-2"><i class="fas fa-play-circle text-yellow-400"></i> <strong>Platform:</strong> ${platform}</p>
+        <p class="flex items-center gap-2"><i class="fas fa-theater-masks text-yellow-400"></i> <strong>Genres:</strong> ${genres}</p>
+        <p class="flex items-center gap-2"><i class="fas fa-star text-yellow-400"></i> <strong>Rating:</strong> ${rating}/10</p>
+      `;
+
+      document.getElementById('watchlist').prepend(card);
+      saveWatchlist();
+
+      // Delete button event
+      card.querySelector('.delete-btn').addEventListener('click', function() {
+        const card = this.closest('div');
+        card.classList.add('fade-out');
+        setTimeout(() => {
+          card.remove();
+          saveWatchlist();
+        }, 300);
+      });
+
+      // Clear form
+      document.getElementById('titleInput').value = '';
+      document.getElementById('ratingInput').value = '';
+      document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+      stars.forEach(star => {
+        star.classList.remove('fas');
+        star.classList.add('far');
+      });
+    });
+
+    // Clear All button
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'btn bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-1 rounded ml-4';
+    clearBtn.innerHTML = '<i class="fas fa-trash"></i> Clear All';
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear your entire watchlist?')) {
+        document.getElementById('watchlist').innerHTML = '';
+        localStorage.removeItem('watchlist');
+      }
+    });
+    document.querySelector('h2.flex').appendChild(clearBtn);
+  </script>
+
+</body>
+</html>
