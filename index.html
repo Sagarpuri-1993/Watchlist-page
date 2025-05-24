@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watchlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.95); }
+    }
+    .fade-in-up {
+      animation: fadeInUp 0.4s ease-out;
+    }
+    .fade-out {
+      animation: fadeOut 0.3s ease-out forwards;
+    }
+    .selected {
+      background-color: #facc15 !important;
+      color: #1f2937 !important;
+      font-weight: bold;
+      transform: scale(1.05);
+    }
+    .btn {
+      transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 110px;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .counter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1f2937;
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4 md:p-6 font-sans">
+  <div class="max-w-4xl mx-auto bg-gray-800 p-4 md:p-6 rounded-2xl shadow-lg space-y-6 fade-in-up">
+    <!-- Input Form -->
+    <div class="space-y-4">
+      <div>
+        <label for="titleInput" class="block text-sm font-semibold mb-1">Title *</label>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="titleInput" type="text" class="flex-1 p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Enter title" required />
+          <div class="flex gap-2">
+            <button class="btn type-btn bg-gray-700 hover:bg-yellow-600 px-4 py-2 rounded flex items-center gap-1" aria-label="Select Movie">
+              <i class="fas fa-film"></i> Movie
+            </button>
+            <button class="btn type-btn bg-gray-700 hover:bg-yellow-600 px-4 py-2 rounded flex items-center gap-1" aria-label="Select Series">
+              <i class="fas fa-tv"></i> Series
+            </button>
+          </div>
+        </div>
+        <p id="titleError" class="text-red-400 text-sm mt-1 hidden">Please enter a title</p>
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Platform *</label>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="Netflix"><i class="fab fa-netflix text-red-500"></i> Netflix</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="Prime Video"><i class="fab fa-amazon text-blue-400"></i> Prime</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="Hotstar"><i class="fas fa-play text-blue-300"></i> Hotstar</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="JioCinema"><i class="fas fa-video text-red-400"></i> JioCinema</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="Zee5"><i class="fas fa-z text-purple-400"></i> Zee5</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="SonyLIV"><i class="fas fa-s text-blue-300"></i> SonyLIV</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="Alt Balaji"><i class="fas fa-a text-red-400"></i> Alt Balaji</button>
+          <button class="btn platform-btn bg-gray-700 hover:bg-yellow-600 px-3 py-1 rounded" aria-label="MX Player"><i class="fas fa-play-circle text-green-400"></i> MX Player</button>
+        </div>
+        <p id="platformError" class="text-red-400 text-sm mt-1 hidden">Please select a platform</p>
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Genre</label>
+        <div class="flex flex-wrap gap-2">
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Action</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Comedy</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Horror</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Sci-Fi</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Crime</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Investigate</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Murder</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Psycho</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Thriller</button>
+          <button class="btn toggle-btn bg-gray-700 hover:bg-yellow-600 px-4 py-1 rounded">Mystery</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="ratingInput" class="block font-semibold mb-1">Rating (1 - 10)</label>
+        <input id="ratingInput" type="number" min="1" max="10" 
+               class="w-full sm:w-24 p-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+               placeholder="e.g. 8"
+               oninput="this.value = Math.max(1, Math.min(10, parseInt(this.value) || ''))" />
+      </div>
+
+      <div class="text-center">
+        <button id="addBtn" class="btn bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-8 py-2 rounded-full transition duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 mx-auto">
+          <i class="fas fa-plus"></i> Add to List
+        </button>
+      </div>
+    </div>
+
+    <!-- Watchlist Display -->
+    <div class="pt-6 border-t border-gray-600">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-2">
+          <i class="fas fa-bookmark"></i> Your Watchlist
+          <span class="counter-badge" id="totalCounter">0</span>
+        </h2>
+        <div id="loadingIndicator" class="hidden flex items-center gap-2 text-sm text-gray-400">
+          <span class="loading-spinner"></span> Loading...
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-green-400 mt-4 mb-2 flex items-center">
+          Yet to Watch
+          <span class="counter-badge bg-green-500" id="yetToWatchCounter">0</span>
+        </h3>
+      </div>
+      <div id="yetToWatch" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+      
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-blue-400 mt-4 mb-2 flex items-center">
+          Watched
+          <span class="counter-badge bg-blue-500" id="watchedCounter">0</span>
+        </h3>
+      </div>
+      <div id="watched" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbjdQHGiWya1a5jyr_8c0RSklCr1xgbM4",
+      authDomain: "watchlistapp-10495.firebaseapp.com",
+      databaseURL: "https://watchlistapp-10495-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "watchlistapp-10495",
+      storageBucket: "watchlistapp-10495.firebasestorage.app",
+      messagingSenderId: "986863823218",
+      appId: "1:986863823218:web:b85eec008c988bff6b55eb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // DOM Elements
+    const elements = {
+      titleInput: document.getElementById('titleInput'),
+      ratingInput: document.getElementById('ratingInput'),
+      addBtn: document.getElementById('addBtn'),
+      yetToWatch: document.getElementById('yetToWatch'),
+      watched: document.getElementById('watched'),
+      loadingIndicator: document.getElementById('loadingIndicator'),
+      titleError: document.getElementById('titleError'),
+      platformError: document.getElementById('platformError'),
+      totalCounter: document.getElementById('totalCounter'),
+      yetToWatchCounter: document.getElementById('yetToWatchCounter'),
+      watchedCounter: document.getElementById('watchedCounter')
+    };
+
+    // Utility Functions
+    function showLoading(show) {
+      elements.loadingIndicator.classList.toggle('hidden', !show);
+    }
+
+    function showError(element, show, message = '') {
+      element.classList.toggle('hidden', !show);
+      if (message) element.textContent = message;
+    }
+
+    function saveToFirebase(listType, htmlContent) {
+      set(ref(db, listType), htmlContent);
+    }
+
+    function updateCounters() {
+      const yetToWatchCount = elements.yetToWatch.children.length;
+      const watchedCount = elements.watched.children.length;
+      const totalCount = yetToWatchCount + watchedCount;
+      
+      elements.yetToWatchCounter.textContent = yetToWatchCount;
+      elements.watchedCounter.textContent = watchedCount;
+      elements.totalCounter.textContent = totalCount;
+    }
+
+    function createCardElement(item) {
+      const card = document.createElement('div');
+      card.className = 'bg-gray-700 p-4 rounded-lg shadow-md fade-in-up relative group';
+      card.dataset.status = item.status;
+      card.innerHTML = `
+        <button class="absolute top-1 right-1 text-red-500 hover:text-red-400 text-sm font-bold bg-gray-900 bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center delete-btn opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Delete item">
+          <i class="fas fa-times"></i>
+        </button>
+        <p><strong>Title:</strong> ${item.title}</p>
+        <p><strong>Type:</strong> ${item.type}</p>
+        <p><strong>Platform:</strong> ${item.platform}</p>
+        <p><strong>Genres:</strong> ${item.genres}</p>
+        <p><strong>Rating:</strong> ${item.rating}/10</p>
+        <button class="toggle-status-btn mt-3 px-3 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm">
+          ${item.status === 'yet' ? 'Mark as Watched' : 'Mark as Unwatched'}
+        </button>
+      `;
+      return card;
+    }
+
+    // Main Functions
+    async function loadFromFirebase() {
+      showLoading(true);
+      try {
+        const dbRef = ref(db);
+        const [yetToWatchSnapshot, watchedSnapshot] = await Promise.all([
+          get(child(dbRef, 'yetToWatch')),
+          get(child(dbRef, 'watched'))
+        ]);
+        
+        elements.yetToWatch.innerHTML = yetToWatchSnapshot.val() || '';
+        elements.watched.innerHTML = watchedSnapshot.val() || '';
+        rebindButtons();
+        updateCounters();
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function rebindButtons() {
+      // Delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = function() {
+          if (confirm('Are you sure you want to delete this item?')) {
+            const card = this.closest('div');
+            card.classList.add('fade-out');
+            setTimeout(() => {
+              card.remove();
+              saveLists();
+              updateCounters();
+            }, 300);
+          }
+        };
+      });
+
+      // Status toggle buttons
+      document.querySelectorAll('.toggle-status-btn').forEach(btn => {
+        btn.onclick = function() {
+          const card = this.closest('div');
+          const isWatched = card.dataset.status === 'watched';
+          card.dataset.status = isWatched ? 'yet' : 'watched';
+          this.textContent = isWatched ? 'Mark as Watched' : 'Mark as Unwatched';
+          document.getElementById(isWatched ? 'yetToWatch' : 'watched').prepend(card);
+          saveLists();
+          updateCounters();
+        };
+      });
+    }
+
+    function saveLists() {
+      saveToFirebase('yetToWatch', elements.yetToWatch.innerHTML);
+      saveToFirebase('watched', elements.watched.innerHTML);
+    }
+
+    function clearForm() {
+      elements.titleInput.value = '';
+      elements.ratingInput.value = '';
+      document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+      showError(elements.titleError, false);
+      showError(elements.platformError, false);
+    }
+
+    function validateForm() {
+      let isValid = true;
+      
+      if (!elements.titleInput.value.trim()) {
+        showError(elements.titleError, true, 'Please enter a title');
+        isValid = false;
+      }
+      
+      if (!document.querySelector('.platform-btn.selected')) {
+        showError(elements.platformError, true, 'Please select a platform');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFromFirebase();
+
+      // Button selection handlers
+      document.querySelectorAll('.type-btn, .platform-btn, .toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('toggle-btn')) {
+            btn.classList.toggle('selected');
+          } else {
+            const group = btn.classList.contains('type-btn') ? '.type-btn' : '.platform-btn';
+            document.querySelectorAll(group).forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (btn.classList.contains('platform-btn')) {
+              showError(elements.platformError, false);
+            }
+          }
+        });
+      });
+
+      // Add button handler
+      elements.addBtn.addEventListener('click', () => {
+        if (!validateForm()) return;
+
+        const item = {
+          title: elements.titleInput.value.trim(),
+          rating: elements.ratingInput.value || '-',
+          type: document.querySelector('.type-btn.selected')?.innerText || 'N/A',
+          platform: document.querySelector('.platform-btn.selected')?.innerText || 'N/A',
+          genres: Array.from(document.querySelectorAll('.toggle-btn.selected')).map(btn => btn.innerText).join(', ') || 'None',
+          status: 'yet'
+        };
+
+        const card = createCardElement(item);
+        elements.yetToWatch.prepend(card);
+        clearForm();
+        saveLists();
+        rebindButtons();
+        updateCounters();
+      });
+
+      // Title input validation
+      elements.titleInput.addEventListener('input', () => {
+        showError(elements.titleError, false);
+      });
+    });
+  </script>
+</body>
+</html>
